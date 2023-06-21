@@ -1,19 +1,17 @@
 class Solution {
 public:
     int findKthPositive(vector<int>& arr, int k) {
+        int low =0;
+        int high=arr.size();
         
-        // Simple Linar Search Method 
-
-     for(int i=0;i<arr.size();i++)
-             {
-              int x=arr[i]-(i+1);
-             
-           if(x>=k)
-
-           return i+k;
-
-            }
-     return arr.size()+k;
-     }   
-    
+        while (low<high)
+        {
+           int mid=low+(high-low)/2;
+            if(arr[mid]-(mid+1)<k)
+              low=mid+1;
+            else
+               high=mid;
+        }
+        return low+k;
+    }
 };
