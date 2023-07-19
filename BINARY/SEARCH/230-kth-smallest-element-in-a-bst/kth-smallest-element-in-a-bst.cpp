@@ -12,30 +12,22 @@
 class Solution {
 public:
     int kthSmallest(TreeNode* root, int k) {
-        int count = 0;
-        return solve(root, k, count);
+      int c=0;
+       return solve(root,k,c);
+        
     }
-    
-private:
-    int solve(TreeNode* root, int k, int& count) {
-        if (root == NULL)
-            return -1; // Return an invalid value to indicate kth smallest not found
-        
-        // Traverse left subtree
-        int leftResult = solve(root->left, k, count);
-        
-        // If kth smallest element found in the left subtree, return the result
-        if (leftResult != -1)
-            return leftResult;
-        
-        // Increment count for the current node
-        count++;
-        
-        // If count becomes equal to k, we found the kth smallest element
-        if (count == k)
-            return root->val;
-        
-        // Otherwise, traverse right subtree
-        return solve(root->right, k, count);
-    }
+    public:
+       int solve (TreeNode* root,int k,int& c)
+       {
+            if(root==NULL)
+               return 0;
+            int leftside=solve(root->left,k,c);
+               if(leftside!=0)
+                 return leftside;
+               c++;
+                if(c==k)
+                return root->val;
+         return solve(root->right,k,c);
+                
+       }
 };
