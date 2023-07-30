@@ -3,7 +3,7 @@ public:
     int findCircleNum(vector<vector<int>>& con)
      {   int count=0;
         int v=con.size();
-        vector<int> vis(v,0);
+        vector<int> vis(v,0);  //vector <int> vis[v]={0};
         for(int i=0;i<v;i++)
           {
               if(!vis[i])
