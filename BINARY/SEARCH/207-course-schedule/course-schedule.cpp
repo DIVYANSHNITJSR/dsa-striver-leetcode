@@ -19,16 +19,17 @@ public:
 
     }
     bool detectCycle(int start,vector<vector<int>>& adj,vector<int>& vis )
-    {if(vis[start]==1) return true;
-     if(vis[start]==2)  return false;
-        vis[start]=1;
+    {
+        // vis[start]=1;
         for(auto it:adj[start])
            {
-            
+               if(!vis[it])
+                  {   vis[it]=1;
                   if(detectCycle(it,adj,vis))
                       return true;
-                  
-                 
+                  }
+                  else if(vis[it]==1)
+                    return true;
            }
            vis[start]=2;
            return false;
