@@ -8,41 +8,39 @@ public:
             adj[flight[0]].push_back({flight[1], flight[2]});
         }
         
-        vector<int> pri(n, INT_MAX); // Initialize with maximum possible value
+        vector<int> pri(n, 1e9); // Initialize with maximum possible value
         pri[src] = 0;
         
         int stops = 0;
         
-        queue<pair<int, int>> q; // Queue for BFS
-        q.push({src, 0});
+        queue<pair<int, pair<int, int>>> q; // Queue for BFS
+        q.push({0, {src, 0}});
         
-        while (!q.empty() && stops <= k) {
-            int size = q.size();
-            
-            for (int i = 0; i < size; ++i) {
-                int city = q.front().first;
-                int price = q.front().second;
-                q.pop();
+        while (!q.empty()) {
+            int stop = q.front().first;
+            int city = q.front().second.first;
+            int price = q.front().second.second;
+            q.pop();
+            if(stop>k)
+            continue;
+
+            for (auto x : adj[city]) {
+                int wtprice = x.second;
+                int nextcity = x.first;
                 
-                for (const auto& neighbor : adj[city]) {
-                    int neighborCity = neighbor.first;
-                    int neighborPrice = neighbor.second;
-                    
-                    if (price + neighborPrice < pri[neighborCity]) {
-                        pri[neighborCity] = price + neighborPrice;
-                        q.push({neighborCity, pri[neighborCity]});
-                    }
+                if (price + wtprice < pri[nextcity]) {
+                    pri[nextcity] = price + wtprice;
+                    q.push({stop + 1, {nextcity, pri[nextcity]}});
                 }
+                
+                
             }
-            
-            if (stops == k) {
-                break;
-            }
-            
-            ++stops;
+           
         }
-        
-        return pri[dst] == INT_MAX ? -1 : pri[dst];
+      if(pri[dst]==1e9)  
+        return -1;
+        return pri[dst];
     }
 };
+
 
