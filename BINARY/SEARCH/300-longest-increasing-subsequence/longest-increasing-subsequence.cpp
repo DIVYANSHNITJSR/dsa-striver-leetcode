@@ -1,28 +1,18 @@
 class Solution {
-public:
-// Function to find the length of the longest increasing subsequence
-int getAns(vector<int>& nums, int n, int ind, int prev_index, vector<vector<int>>& dp) {
-    // Base condition
-    if (ind == n)
-        return 0;
-        
-    if (dp[ind][prev_index + 1] != -1)
-        return dp[ind][prev_index + 1];
-    
-    int notTake = 0 + getAns(nums, n, ind + 1, prev_index, dp);
-    
-    int take = 0;
-    
-    if (prev_index == -1 || nums[ind] > nums[prev_index]) {
-        take = 1 + getAns(nums, n, ind + 1, ind, dp);
+    int solve(int ind,int prev,vector<int>& nums,vector<vector<int>>& dp)
+    {int n=nums.size();
+        if(ind==n) return 0;
+        if(dp[ind][prev+1]!=-1)return dp[ind][prev+1];
+        int not_take=0+solve(ind+1,prev,nums,dp);
+        int take=0;
+        if(prev==-1 || nums[ind]>nums[prev])
+            take=1+solve(ind+1,ind,nums,dp);
+        return dp[ind][prev+1]=max(take,not_take);
     }
-    
-    return dp[ind][prev_index + 1] = max(notTake, take);
-}
+public:
     int lengthOfLIS(vector<int>& nums) {
         int n=nums.size();
         vector<vector<int>> dp(n,vector<int>(n+1,-1));
-     return getAns(nums, n, 0, -1, dp);
-
+       return solve(0,-1,nums,dp);
     }
 };
