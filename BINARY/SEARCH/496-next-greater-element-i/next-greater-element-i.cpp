@@ -1,34 +1,32 @@
 class Solution {
 public:
-int findIndex(vector<int>& nums2,int key)
-     {
-         int n2=nums2.size();
-         for(int i=0;i<n2;i++)
-         {
-             if(nums2[i]==key)
-               return i;
-         }
-         return -1;
-     }
-   vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-         int n1=nums1.size();
-         int n2=nums2.size();
-         vector<int> ans;
-         for(int i=0;i<n1;i++)
-         {   int val=-1;
-             int key=nums1[i];
-             int index=findIndex(nums2,key);
-             for(int j=index+1;j<n2;j++)
-             {
-                 if(nums2[j]>key)
-                    {
-                       val=nums2[j];
-                        break;
-                    }
-                    
-             }
-             ans.push_back(val);
-         }
-         return ans;
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        stack<int> s;
+        unordered_map<int,int> mp;
+        int n=nums2.size();
+        for(int i=n-1;i>=0;i--)
+        {
+             if(s.empty())
+               mp[nums2[i]]=-1;
+              else if(!s.empty())
+              {
+                  if(s.top()>nums2[i])
+                     mp[nums2[i]]=s.top();
+                  else if(s.top()<=nums2[i])
+                  {
+                      while(s.size()>0 && s.top()<=nums2[i])
+                      s.pop();
+                      if(s.size()==0)
+                       mp[nums2[i]]=-1;
+                      else if(s.top()>nums2[i])
+                        mp[nums2[i]]=s.top();
+                  }
+              }
+              s.push(nums2[i]);
+        }
+        vector<int> ans;
+        for(int i=0;i<nums1.size();i++)
+            ans.push_back(mp[nums1[i]]);
+        return ans;
     }
 };
